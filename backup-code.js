@@ -1,6 +1,7 @@
 'use strict'
 
-const mqtt = require('mqtt')
+//const mqtt = require('mqtt')
+const MQTT = require("async-mqtt");
 const fs = require('fs')
 const path = require('path')
 const { exit } = require('process')
@@ -22,19 +23,12 @@ const options = {
   protocol: 'mqtts'
 }
 
-const client = mqtt.connect(options)
+//const client = mqtt.connect(options)
 
 //const t0 = performance.now();
 
 
-
-
-publish_temp_with_suburb()
-
-
-
 function publish_temp_with_suburb(params) {
-  
 
   var t0 = new Date().toISOString()
   const temp_with_suburb_object = { "Temperature": "82", "Suburb": "2398", "Timestamp": t0 }
@@ -49,11 +43,18 @@ function publish_temp_with_suburb(params) {
 
 
 
+publish_temp_with_suburb()
 
 
-var delayInMilliseconds = 2000; //1 second
+var delayInMilliseconds = 1000; //1 second
+
+
+
+
+
 setTimeout(function () {
   client.end()
+
 }, delayInMilliseconds);
 
 

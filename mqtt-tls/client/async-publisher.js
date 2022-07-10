@@ -1,6 +1,7 @@
 'use strict'
 
-const mqtt = require('mqtt')
+//const mqtt = require('mqtt')
+const MQTT = require("async-mqtt");
 const fs = require('fs')
 const path = require('path')
 const { exit } = require('process')
@@ -22,57 +23,35 @@ const options = {
   protocol: 'mqtts'
 }
 
-const client = mqtt.connect(options)
-
-//const t0 = performance.now();
 
 
 
-
-publish_temp_with_suburb()
-
+run()
 
 
-function publish_temp_with_suburb(params) {
-  
+
+async function run() {
+
+
+  const client = await MQTT.connectAsync(options)
+
+  console.log("Starting");
 
   var t0 = new Date().toISOString()
   const temp_with_suburb_object = { "Temperature": "82", "Suburb": "2398", "Timestamp": t0 }
   var temp_with_suburb = JSON.stringify(temp_with_suburb_object);
 
 
-  client.publish('temp_with_suburb', temp_with_suburb)
-
-
-
+	try {
+		await client.publish("temp_with_suburb", temp_with_suburb);
+		// This line doesn't run until the server responds to the publish
+		await client.end();
+		// This line doesn't run until the client has disconnected without error
+		console.log("Done");
+	} catch (e){
+		// Do something about it!
+		console.log(e.stack);
+		process.exit();
+	}
 }
-
-
-
-
-
-var delayInMilliseconds = 2000; //1 second
-setTimeout(function () {
-  client.end()
-}, delayInMilliseconds);
-
-
-
-
-
-
-
-
-
-
-//client.end()
-
-
-
-
-
-
-
-
-
 
