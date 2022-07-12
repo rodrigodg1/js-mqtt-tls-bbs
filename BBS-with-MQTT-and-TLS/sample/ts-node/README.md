@@ -26,7 +26,6 @@ Install mosquitto:
 
 ```
 sudo apt-get install mosquitto
-sudo apt-get install mosquitto-clients
 ```
 
 In the mosquitto server:
@@ -46,21 +45,19 @@ mosquitto -c server-config.conf
 to run the clients/subscribers:
 
 ```
-cd certs/client/
+cd client/
 ```
 
 and
 
 ```
-chmod +x subscriberA.sh
-./subscriberA
+node subscriber_topic_A.js
 ```
 
 in other terminal:
 
 ```
-chmod +x subscriberB.sh
-./subscriberB
+node subscriber_topic_B.js
 ```
 
 To generate the derived proofs run the publisher and server code:
