@@ -44,6 +44,8 @@ client.on('message', function (topic, message) {
   const temperature = temp_with_GPS_object["Temperature"]
   const GPS_Lat = temp_with_GPS_object["GPS-Lat"]
   const GPS_Long = temp_with_GPS_object["GPS-Long"]
+
+  //publisher timestamp
   const t0 = temp_with_GPS_object["Timestamp"].toString()
 
 
@@ -58,9 +60,9 @@ client.on('message', function (topic, message) {
 
 
 
-  //console.log("\nTimestamp received: " + t0)
+  //console.log("\nPublisher timestamp: " + t0)
   const current_time = new Date().toISOString()
-  //console.log("Current Time:       " + current_time )
+ // console.log("Current Time:        " + current_time )
   const end_time = current_time.split(":")
   const end_minute = end_time[1]
   const end_time_seconds_and_ms = end_time[2].slice(0, 6)
@@ -80,37 +82,8 @@ client.on('message', function (topic, message) {
 
 
 
- // console.log("\nDelay in ms: " + delay)
+ console.log("\nDelay in ms: " + delay.toFixed(2))
  // console.log(n_subs +": "+ delay.toFixed(2))
-
-
-
-
-
-
-
-  /*
-  fs.appendFile('delay_topic_B.csv', String(delay.toFixed(2)), function (err) {
-    if (err) throw err;
-    //console.log('Saved!');
-});
-
-fs.appendFile('delay_topic_B.csv', "\n", function (err) {
-  if (err) throw err;
-  //console.log('Saved!');
-});
-
-  console.log("Temperature: " + temperature)
-  console.log("GPS: " + GPS)
-  console.log("Timestamp: " + t0)
-  */
-
-
-
-
-
-
-  //console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
 
 
 

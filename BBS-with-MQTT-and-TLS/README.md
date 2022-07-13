@@ -46,7 +46,7 @@ The following is a list of dependencies:
 
 ## Example
 
-- [Example 1](https://github.com/rodrigodg1/bbs-mqtt-tls/tree/main/BBS-with-MQTT-and-TLS/sample/ts-node)
+- [Example 1](https://github.com/rodrigodg1/js-mqtt-tls-bbs/tree/main/BBS-with-MQTT-and-TLS/sample/ts-node)
 
 or
 

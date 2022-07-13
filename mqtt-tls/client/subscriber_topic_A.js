@@ -49,13 +49,14 @@ client.on('message', function (topic, message) {
 
   const started_time = t0.split(":")
   const started_minute = t0[1]
+  //publisher started time
   const started_time_seconds_and_ms = started_time[2].slice(0, 6)
 
 
 
-  //console.log("\nTimestamp received: " + t0)
+  //console.log("\nPublisher timestamp: " + t0)
   const current_time = new Date().toISOString()
-  //console.log("Current Time:       " + current_time )
+  //console.log("Current Time:        " + current_time)
   const end_time = current_time.split(":")
   const end_minute = end_time[1]
   const end_time_seconds_and_ms = end_time[2].slice(0, 6)
@@ -66,7 +67,7 @@ client.on('message', function (topic, message) {
 
 
 
-  fs.readFile('n_of_subs.txt', 'utf8', function (err,data) {
+  fs.readFile('n_of_subs.txt', 'utf8', function (err, data) {
     if (err) {
       return console.log(err);
     }
@@ -76,32 +77,8 @@ client.on('message', function (topic, message) {
 
 
 
- // console.log("\nDelay in ms: " + delay)
- // console.log(n_subs +": "+ delay.toFixed(2))
-
-  /*
-
-  fs.appendFile('delay_topic_A.csv', String(delay.toFixed(2)), function (err) {
-    if (err) throw err;
-    //console.log('Saved!');
-});
-
-fs.appendFile('delay_topic_A.csv', "\n", function (err) {
-  if (err) throw err;
-  //console.log('Saved!');
-});
-
-  console.log("Temperature: " + temperature)
-  console.log("Suburb: " + suburb)
-  console.log("Timestamp: " + t0)
-  */
-
-
-
-
-
-
-  //console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
+  //console.log("\nDelay in ms: " + delay.toFixed(2))
+  // console.log(n_subs +": "+ delay.toFixed(2))
 
 
 

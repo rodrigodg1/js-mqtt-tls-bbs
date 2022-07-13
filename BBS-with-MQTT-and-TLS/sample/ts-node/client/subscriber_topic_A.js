@@ -29,12 +29,13 @@ client.subscribe("temp_with_suburb");
 client.on("message", function (topic, message) {
   //console.log("\nReceived Data:")
 
-  //console.log(message.toString())
+  console.log(message.toString())
 
   const temp_with_suburb_object = JSON.parse(message);
 
   const temperature = temp_with_suburb_object["Temperature"];
   const suburb = temp_with_suburb_object["Suburb"];
+  const server_label = temp_with_suburb_object["Server"];
   const t0 = temp_with_suburb_object["Timestamp"].toString();
 
   // 2022-07-10T18:30:08.671Z
@@ -43,20 +44,23 @@ client.on("message", function (topic, message) {
   const started_minute = t0[1];
   const started_time_seconds_and_ms = started_time[2].slice(0, 6);
 
-  //console.log("\nTimestamp received: " + t0)
+
+  console.log("\nServer Label: ", server_label)
+  console.log("Timestamp received: " + t0)
   const current_time = new Date().toISOString();
-  //console.log("Current Time:       " + current_time )
+  console.log("Current Time:       " + current_time)
   const end_time = current_time.split(":");
   const end_minute = end_time[1];
   const end_time_seconds_and_ms = end_time[2].slice(0, 6);
 
   var delay = (end_time_seconds_and_ms - started_time_seconds_and_ms) * 1000;
+  console.log("Delay in ms: ", delay.toFixed(2))
 
   fs.readFile("n_of_subs.txt", "utf8", function (err, data) {
     if (err) {
       return console.log(err);
     }
     var n_subs = data;
-    console.log(data + ", " + delay.toFixed(2));
+    //console.log(data + ", " + delay.toFixed(2));
   });
 });

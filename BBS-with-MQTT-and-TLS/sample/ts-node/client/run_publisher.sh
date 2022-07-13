@@ -4,10 +4,12 @@
 
 cd ..
 
-for i in {1..10}
+yarn server &
+
+for i in {1..5}
 do
-    echo "Execution $i/10"
+    echo "Execution $i/5"
     sleep 2
-    yarn publisher-and-server
+    yarn publisher
 
 done

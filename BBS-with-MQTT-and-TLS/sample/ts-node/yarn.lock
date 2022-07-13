@@ -19,6 +19,13 @@
   "resolved" "https://registry.npmjs.org/arg/-/arg-4.1.3.tgz"
   "version" "4.1.3"
 
+"async-mqtt@^2.6.2":
+  "integrity" "sha512-541G08kFaIZLdNdHEo4lNmUPpOn1Yc9VdcB6pw99VfknPIZFOu2qwjQM1edxkK8KWbJUHcr7x3yf3RAbAFSPJQ=="
+  "resolved" "https://registry.npmjs.org/async-mqtt/-/async-mqtt-2.6.2.tgz"
+  "version" "2.6.2"
+  dependencies:
+    "mqtt" "^4.1.0"
+
 "balanced-match@^1.0.0":
   "integrity" "sha1-ibTRmasr7kneFk6gK4nORi1xt2c= sha512-9Y0g0Q8rmSt+H33DfKv7FOc3v+iRI+o1lbzt8jGcIosYW37IIW/2XVYq5NPdmaD5NQ59Nk26Kl/vZbwW9Fr8vg=="
   "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.0.tgz"
@@ -197,7 +204,7 @@
     "debug" "^4.1.1"
     "process-nextick-args" "^2.0.1"
 
-"mqtt@^4.3.7":
+"mqtt@^4.1.0", "mqtt@^4.3.7":
   "integrity" "sha512-ew3qwG/TJRorTz47eW46vZ5oBw5MEYbQZVaEji44j5lAUSQSqIEoul7Kua/BatBW0H0kKQcC9kwUHa1qzaWHSw=="
   "resolved" "https://registry.npmjs.org/mqtt/-/mqtt-4.3.7.tgz"
   "version" "4.3.7"

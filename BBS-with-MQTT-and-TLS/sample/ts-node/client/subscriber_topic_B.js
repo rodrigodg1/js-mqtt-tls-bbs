@@ -29,7 +29,7 @@ client.subscribe("temp_with_gps");
 client.on("message", function (topic, message) {
   //console.log("\nReceived Data:")
 
-  //console.log(message.toString())
+  console.log(message.toString())
 
   const temp_with_GPS_object = JSON.parse(message);
 
@@ -37,6 +37,7 @@ client.on("message", function (topic, message) {
   const GPS_Lat = temp_with_GPS_object["GPS-Lat"];
   const GPS_Long = temp_with_GPS_object["GPS-Long"];
   const t0 = temp_with_GPS_object["Timestamp"].toString();
+  const server_label = temp_with_GPS_object["Server"];
 
   // 2022-07-10T18:30:08.671Z
 
@@ -44,9 +45,10 @@ client.on("message", function (topic, message) {
   const started_minute = started_time[1];
   const started_time_seconds_and_ms = started_time[2].slice(0, 6);
 
-  //console.log("\nTimestamp received: " + t0)
+  console.log("\nServer Label: ", server_label)
+  console.log("Timestamp received: " + t0)
   const current_time = new Date().toISOString();
-  //console.log("Current Time:       " + current_time )
+  console.log("Current Time:       " + current_time )
   const end_time = current_time.split(":");
   const end_minute = end_time[1];
   const end_time_seconds_and_ms = end_time[2].slice(0, 6);

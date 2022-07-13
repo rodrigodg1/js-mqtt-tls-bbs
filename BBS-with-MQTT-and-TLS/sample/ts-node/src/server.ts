@@ -16,7 +16,7 @@
 import { readFileSync } from "fs";
 const execSync = require("child_process").execSync;
 
-const mqtt = require("mqtt");
+const MQTT = require("mqtt");
 const fs = require("fs");
 const path = require("path");
 const KEY = fs.readFileSync(path.join(__dirname, "/client.key"));
@@ -45,42 +45,69 @@ import {
   blsVerifyProof,
 } from "@mattrglobal/bbs-signatures";
 import { exit } from "process";
+import { Console } from "console";
+
+
 
 const main = async () => {
   try {
     //Generate a new key pair
 
-    const client = mqtt.connect(options);
+    const client = MQTT.connect(options);
 
     const keyPair = await generateBls12381G2KeyPair();
 
-    console.log("Key pair generated");
-    //console.log(`Public key base64 = ${Buffer.from(keyPair.publicKey).toString("base64")}`);
 
-    //document sent by publisher and will be received by server
-    let jsonInputDocument = require("../inputDocument.json");
+    console.log("Server Connected")
 
-    const temperature = jsonInputDocument.Data.Temperature;
-    const suburb = jsonInputDocument.Data.Suburb;
-    const latitude = jsonInputDocument.Data.GPS_Lat;
-    const longitude = jsonInputDocument.Data.GPS_Long;
 
-    //Set of messages we wish to sign
-    const messages = [
-      Uint8Array.from(Buffer.from(temperature.toString(), "utf8")),
-      Uint8Array.from(Buffer.from(suburb.toString(), "utf8")),
-      Uint8Array.from(Buffer.from(latitude.toString(), "utf8")),
-      Uint8Array.from(Buffer.from(longitude.toString(), "utf8")),
-    ];
 
-    var startTime_publisher = new Date().toISOString();
+    //topic between publisher and server
+    client.subscribe("signature_data");
 
-    //publisher creates the signature. The signature and the inputDocument will be send to the server.
-    const signature = await blsSign({
-      keyPair,
-      messages: messages,
-    });
 
+
+    client.on("message", async function (topic, message) {
+      console.log("\nReceived Data:")
+
+      console.log(message.toString())
+
+      const received_data_from_publisher = JSON.parse(message);
+
+      const temperature = received_data_from_publisher["Temperature"];
+      const suburb = received_data_from_publisher["Suburb"];
+      const latitude = received_data_from_publisher["Latitude"];
+      const longitude = received_data_from_publisher["Longitude"];
+      //const signature = received_data["Signature"];
+      const timestamp_from_publisher = received_data_from_publisher["Timestamp"].toString();
+
+
+
+
+      console.log("Temperature: ", temperature)
+      console.log("Suburb: ", suburb)
+      console.log("Latitude: ", latitude)
+      console.log("Longitude: ", longitude)
+      //console.log("Signature: ", signature)
+      console.log("Timestamp: ", timestamp_from_publisher)
+
+
+
+      const messages = [
+        Uint8Array.from(Buffer.from(temperature.toString(), "utf8")),
+        Uint8Array.from(Buffer.from(suburb.toString(), "utf8")),
+        Uint8Array.from(Buffer.from(latitude.toString(), "utf8")),
+        Uint8Array.from(Buffer.from(longitude.toString(), "utf8")),
+      ];
+
+
+      const signature = await blsSign({
+        keyPair,
+        messages: messages,
+      });
+  
+
+      
     //Verify the signature
     const isVerified = await blsVerify({
       publicKey: keyPair.publicKey,
@@ -88,6 +115,9 @@ const main = async () => {
       signature,
     });
 
+  
+
+    //create a proof for first version
     const proof_temp_suburb = await blsCreateProof({
       signature,
       publicKey: keyPair.publicKey,
@@ -96,17 +126,25 @@ const main = async () => {
       revealed: [0, 1], //temperature and suburb position
     });
 
+
+
+    //create a object with version 2 to send to the subscribers
     var temp_suburb = {
       Temperature: temperature,
       Suburb: suburb,
       Proof: proof_temp_suburb,
-      Timestamp: startTime_publisher,
+      Timestamp: timestamp_from_publisher,
+      Server:true
     };
     var temp_with_suburb_string = JSON.stringify(temp_suburb);
 
+
     client.publish("temp_with_suburb", temp_with_suburb_string);
 
-    //Derive a proof from the signature revealing all the items
+
+
+
+    //Derive a proof for second version
     const proof_all_items = await blsCreateProof({
       signature,
       publicKey: keyPair.publicKey,
@@ -115,25 +153,50 @@ const main = async () => {
       revealed: [0, 1, 2], //temperature and GPS position
     });
 
+
+    //create a object with version 2 to send to the subscribers
     var temp_with_gps = {
       Temperature: temperature,
       Lat_GPS: latitude,
       Long_GPS: longitude,
       Proof: proof_all_items,
-      Timestamp: startTime_publisher,
+      Timestamp: timestamp_from_publisher,
+      Server:true
     };
     var temp_with_gps_json = JSON.stringify(temp_with_gps);
 
+
+
     client.publish("temp_with_gps", temp_with_gps_json);
 
+
+
     console.log("Published !");
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
   } catch (error) {
     console.error(error);
   }
 
-  setTimeout(function () {
-    exit();
-  }, 1000);
+
+
 };
 
-main();
+
+main()

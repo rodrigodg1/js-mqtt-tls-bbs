@@ -25,9 +25,10 @@ echo "Subscribers, Delay" >> ../sub_topic_A/all_delay_topic_A.csv
 echo "Subscribers, Delay" >> ../sub_topic_B/all_delay_topic_B.csv
 
 
-
-
 sleep 3
+
+
+
 
 echo "Starting 2 Subs Evaluation ... "
 echo -n "2 Subscribers" > n_of_subs.txt

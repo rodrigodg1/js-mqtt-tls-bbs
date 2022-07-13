@@ -15,14 +15,14 @@ rm -rf ../sub_topic_B/6_subs/sub_B_*
 rm -rf ../sub_topic_B/8_subs/sub_B_*
 rm -rf ../sub_topic_B/all_delay*
 
-
+#closes the clients process
 killall node
 
 
 
 #header for delay file
-echo "Subscribers, Delay" >> ../sub_topic_A/all_delay_topic_A.csv
-echo "Subscribers, Delay" >> ../sub_topic_B/all_delay_topic_B.csv
+echo "Subscribers, Delay (ms)" >> ../sub_topic_A/all_delay_topic_A.csv
+echo "Subscribers, Delay (ms)" >> ../sub_topic_B/all_delay_topic_B.csv
 
 
 
@@ -112,4 +112,4 @@ killall node
 cat ../sub_topic_A/8_subs/sub_A_8.csv >> ../sub_topic_A/all_delay_topic_A.csv
 cat ../sub_topic_B/8_subs/sub_B_8.csv >> ../sub_topic_B/all_delay_topic_B.csv
 
-
+echo -n "" > n_of_subs.txt
